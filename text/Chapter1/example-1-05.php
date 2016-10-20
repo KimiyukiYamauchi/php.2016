@@ -1,4 +1,3 @@
-
 <?php
 // Print a greeting if the form was submitted
 if (isset($_POST['user'])) {
