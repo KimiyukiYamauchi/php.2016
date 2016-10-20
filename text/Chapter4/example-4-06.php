@@ -1,3 +1,4 @@
+<?php
 $dinner = array('Sweet Corn and Asparagus',
                 'Lemon Chicken',
                 'Braised Bamboo Fungus');
