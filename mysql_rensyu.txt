@@ -1,0 +1,39 @@
+1. テーブル作成スクリプトを/vagrant(サーバが見れるディレクトリ)に持っていくる
+$ cp ~/oracle.2016/create_tbl_mysql.sql ~/vccw/.
+2. サーバに接続
+$ cd ~/vccw
+$ vagrant ssh
+3. /vagrantディレクトリに移動
+$ cd /vagrant
+4. rootユーザでmysqlサーバに接続
+$ mysql -u root -p
+5. データベース作成
+mysql> create database rensyu;
+6. ユーザ及びパスワード作成
+mysql> grant all on rensyu.* to yamauchi@localhost identified by 'pass';
+7. データベースサーバから抜ける
+mysql> exit
+8. 作成したユーザでのデータベースへの接続確認
+$ mysql -u yamauchi -p rensyu
+Enter password: pass
+9. データベースサーバから抜ける
+mysql> exit
+10. 練習用環境を構築
+$ mysql -u yamauchi -p rensyu < create_tbl_mysql.sql
+10. データベースサーバに接続
+$ mysql -u yamauchi -p rensyu
+Enter password: pass
+11. テーブルが作成されていることを確認
+mysql> show tables;
+以下のようにテーブルが作成されていることを確認
++------------------+
+| Tables_in_rensyu |
++------------------+
+| customers        |
+| departments      |
+| employees        |
+| ord_details      |
+| orders           |
+| products         |
+| salgrades        |
++------------------+
