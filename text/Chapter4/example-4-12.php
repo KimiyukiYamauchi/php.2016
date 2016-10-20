@@ -1,3 +1,4 @@
+<?php
 $row_color = array('red','green');
 $dinner = array('Sweet Corn and Asparagus',
                 'Lemon Chicken',

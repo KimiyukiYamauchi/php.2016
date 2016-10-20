@@ -1,3 +1,4 @@
+<?php
 $row_color = array('red','green');
 $color_index = 0;
 $meal = array('breakfast' => 'Walnut Bun',
