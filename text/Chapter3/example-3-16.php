@@ -1,4 +1,4 @@
-
+<?php
 $i = 1;
 print '<select name="people">';
 while ($i <= 10) {
