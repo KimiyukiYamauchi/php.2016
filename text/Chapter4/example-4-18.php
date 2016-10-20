@@ -1,3 +1,4 @@
+<?php
 $meals['breakfast'] = 'Walnut Bun';
 $meals['lunch'] = 'Eggplant with Chili Sauce';
 $amounts = array(3, 6);
