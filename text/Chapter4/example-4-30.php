@@ -1,3 +1,5 @@
+<?php
+
 $flavors = array('Japanese' => array('hot' => 'wasabi',
                                      'salty' => 'soy sauce'),
                  'Chinese'  => array('hot' => 'mustard',
@@ -8,6 +10,6 @@ foreach ($flavors as $culture => $culture_flavors) {
 
     // $flavor is the key and $example is the value
     foreach ($culture_flavors as $flavor => $example) {
-        print "A $culture $flavor flavor is $example.\n";
+        print "A $culture $flavor flavor is $example.<br>\n";
     }
 }
