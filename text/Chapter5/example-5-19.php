@@ -1,3 +1,5 @@
+<?php
+
 function complete_bill($meal, $tax, $tip, $cash_on_hand) {
     $tax_amount = $meal * ($tax / 100);
     $tip_amount = $meal * ($tip / 100);
@@ -11,8 +13,10 @@ function complete_bill($meal, $tax, $tip, $cash_on_hand) {
     }
 }
 
-if ($total = complete_bill(15.22, 8.25, 15, 20)) {
+if ($total = complete_bill(20.22, 8.25, 15, 20)) {
     print "I'm happy to pay $total.";
 } else {
     print "I don't have enough money. Shall I wash some dishes?";
 }
+
+var_dump($total);
