@@ -1,13 +1,15 @@
+<?php
+
 $dinner = 'Curry Cuttlefish';
 
 function vegetarian_dinner() {
-    global $dinner;
+    global $dinner; // $dinnerはグローバル変数である
     print "Dinner was $dinner, but now it's ";
-    $dinner = 'Sauteed Pea Shoots'; 
+    $dinner = 'Sauteed Pea Shoots'; // グローバル変数の書き換え
     print $dinner;
-    print "\n";
+    print "<br>\n";
 }
 
-print "Regular Dinner is $dinner.\n";
+print "Regular Dinner is $dinner.<br>\n";
 vegetarian_dinner();
 print "Regular dinner is $dinner";

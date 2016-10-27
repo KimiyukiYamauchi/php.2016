@@ -1,17 +1,21 @@
+<?php
+
 $dinner = 'Curry Cuttlefish';
 
 function vegetarian_dinner() {
+	$dinner = '';
     print "Dinner is $dinner, or ";
     $dinner = 'Sauteed Pea Shoots'; 
     print $dinner;
-    print "\n";
+    print "<br>\n";
 }
 
 function kosher_dinner() {
+	$dinner = '';
     print "Dinner is $dinner, or ";
     $dinner = 'Kung Pao Chicken';
     print $dinner;
-    print "\n";
+    print "<br>\n";
 }
 
 print "Vegetarian ";
