@@ -1,4 +1,4 @@
-<form method="POST" action="catalog.php">
+<form method="POST" action="<?php echo $_SERVER['SCRIPT_NAME'] ?>">
 <input type="text" name="product_id">
 <select name="category">
 <option value="ovenmitt">Pot Holder</option>
@@ -9,6 +9,8 @@
 </form>
 Here are the submitted values:
 
-product_id: <?php print $_POST['product_id']; ?>
+product_id: 
+<?php if(isset($_POST['product_id'])) print $_POST['product_id']; ?>
 <br/>
-category: <?php print $_POST['category']; ?>
+category: 
+<?php if(isset($_POST['category'])) print $_POST['category']; ?>
