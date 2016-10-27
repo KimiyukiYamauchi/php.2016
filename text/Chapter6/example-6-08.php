@@ -1,6 +1,8 @@
+<?php
+
 // Logic to do the right thing based on 
 // the hidden _submit_check parameter
-if ($_POST['_submit_check']) {
+if (array_key_exists('_submit_check', $_POST)) {
     if (validate_form()) {
         process_form();
     } else {
@@ -30,7 +32,7 @@ _HTML_;
 // Check the form data
 function validate_form() {
     // Is my_name at least 3 characters long?
-    if (strlen($_POST['my_name']) < 3) {
+    if (mb_strlen($_POST['my_name']) < 3) {
         return false;
     } else {
         return true;

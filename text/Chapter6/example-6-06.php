@@ -1,17 +1,21 @@
-// Logic to do the right thing based on 
-// the submitted form parameters
-if (array_key_exists('my_name',$_POST) {
+<?php
+
+// $_POSTにキーが存在すれば、ポストされているので、
+// process_form関数をよぶ
+// $_POSTにキーがなければ、ポストされていないので、
+// show_form関数をよぶ
+if (array_key_exists('my_name',$_POST)) {
     process_form();
 } else {
     show_form();
 }
 
-// Do something when the form is submitted
+// フォームがサブミットされたとき何かをする
 function process_form() {
     print "Hello, ". $_POST['my_name'];
 }
 
-// Display the form
+// フォームを表示
 function show_form() {
     print<<<_HTML_
 <form method="POST" action="$_SERVER[PHP_SELF]">
