@@ -1,13 +1,19 @@
-// Logic to do the right thing based on 
-// the hidden _submit_check parameter
-if ($_POST['_submit_check']) {
-    // If validate_form() returns errors, pass them to show_form()
+<?php
+
+// $_POST配列に _submit_checkキーがあれば
+// サブミットされている
+if (array_key_exists('_submit_check', $_POST)) {
+    // validate_formから返されるエラーメッセージの配列が
+    // 空でなければ、エラメッセージ引数として、フォーム表示
     if ($form_errors = validate_form()) {
         show_form($form_errors);
     } else {
+        // エラーメッセージの配列が空の場合は
+        // 処理を実行
         process_form();
     }
 } else {
+    // サブミットされていない場合はフォームを表示
     show_form();
 }
 
@@ -41,7 +47,7 @@ function validate_form() {
     $errors = array();
 
     // Add an error message if the name is too short
-    if (strlen($_POST['my_name']) < 3) {
+    if (mb_strlen($_POST['my_name']) < 3) {
         $errors[] = 'Your name must be at least 3 letters long.';
     }
 
