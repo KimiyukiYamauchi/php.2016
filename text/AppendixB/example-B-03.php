@@ -1,3 +1,7 @@
+<?php
+
+$_POST['zip'] = '12345-6789';
+
 // Test the value of $_POST['zip'] against the
 // pattern ^\d{5}(-\d{4}?$
 if (preg_match('/^(\d{5})(-\d{4})?$/',$_POST['zip'],$matches)) {
@@ -15,6 +19,23 @@ if (preg_match('/^(\d{5})(-\d{4})?$/',$_POST['zip'],$matches)) {
     }
 }
 
+var_dump($matches);
+
+$html = <<<_HTML_
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <b>TestTestTest</b>
+</body>
+</html>
+
+_HTML_;
+
 // Test the value of $html against the pattern @<b>[^<]+</b>
 // The delimiter is @ since / occurs in the pattern
 $is_bold = preg_match('@<b>([^<]+)</b>@',$html,$matches);
@@ -22,3 +43,5 @@ if ($is_bold) {
     // $matches[1] contains what's inside the bold tags
     print "The bold text is: $matches[1]";
 }
+
+var_dump($matches);

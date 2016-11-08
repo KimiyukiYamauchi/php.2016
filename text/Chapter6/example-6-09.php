@@ -51,6 +51,8 @@ function validate_form() {
         $errors[] = 'Your name must be at least 3 letters long.';
     }
 
+    
+
     // Return the (possibly empty) array of error messages
     return $errors;
 }

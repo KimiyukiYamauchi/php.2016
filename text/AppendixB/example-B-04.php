@@ -1,3 +1,7 @@
+<?php
+
+$_POST['zip'] = '12345-6789';
+
 if (preg_match('/^(\d{5})(-(\d{4}))?$/',$_POST['zip'],$matches)) {
     print "The beginning of the ZIP Code is: $matches[1]\n";
     // $matches[2] contains what's in the second set of parentheses:
@@ -7,3 +11,5 @@ if (preg_match('/^(\d{5})(-(\d{4}))?$/',$_POST['zip'],$matches)) {
         print "The ZIP+4 is: $matches[3]";
     }
 }
+
+var_dump($matches);

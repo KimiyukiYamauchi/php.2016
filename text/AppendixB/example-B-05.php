@@ -1,3 +1,5 @@
+<?php
+
 $html = <<<_HTML_
 <ul>
 <li>Beef Chow-Fun</li>
