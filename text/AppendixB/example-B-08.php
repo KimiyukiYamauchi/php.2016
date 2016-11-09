@@ -1,3 +1,5 @@
+<?php
+
 $members=<<<TEXT
 
 Name               E-Mail Address
@@ -8,5 +10,7 @@ Mario A. Plumber   mario@franchise.example.org
 Bentley T. Bear    bb@xtal-castles.example.net
 TEXT;
 
-print preg_replace('/([^@\s]+)@(([-a-z0-9]+\.)+[a-z]{2,})/',
-                   '\\1 at \\2', $members);
+print $members;
+
+print preg_replace('/([^@\s]+)@((([-a-z0-9]+\.)+)[a-z]{2,})/',
+                   '\\1 at \\2 ==> \\0 ::: \\3', $members);
