@@ -1,7 +1,11 @@
+<?php
+
 $sweets = array('puff' => 'Sesame Seed Puff',
                  'square' => 'Coconut Milk Gelatin Square',
                  'cake' => 'Brown Sugar Cake',
                  'ricemeat' => 'Sweet Rice and Meat');
+
+$defaults['sweet'] = 'cake';
 
 print '<select name="sweet">';
 // $val is the option value, $choice is what's displayed

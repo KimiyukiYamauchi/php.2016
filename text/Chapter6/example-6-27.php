@@ -1,3 +1,5 @@
+<?php
+
 $main_dishes = array('cuke' => 'Braised Sea Cucumber',
                      'stomach' => "Sauteed Pig's Stomach",
                      'tripe' => 'Sauteed Tripe with Wine Sauce',
@@ -7,6 +9,8 @@ $main_dishes = array('cuke' => 'Braised Sea Cucumber',
 
 print '<select name="main_dish[]" multiple="multiple">';
 
+$defaults['main_dish'] = array('cuke', 'tripe', 'abalone');
+
 $selected_options = array();
 foreach ($defaults['main_dish'] as $option) {
     $selected_options[$option] = true;
@@ -15,7 +19,7 @@ foreach ($defaults['main_dish'] as $option) {
 // print out the <option> tags
 foreach ($main_dishes as $option => $label) {
     print '<option value="' . htmlentities($option) . '"';
-    if ($selected_options[$option]) {
+    if (array_key_exists($option, $selected_options)) {
         print ' selected="selected"';
     }
     print '>' . htmlentities($label) . '</option>';
