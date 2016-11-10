@@ -19,7 +19,8 @@ if (array_key_exists('_submit_check', $_POST)) {
 
 // Do something when the form is submitted
 function process_form() {
-    print "Hello, ". $_POST['my_name'];
+    print "Hello, ". $_POST['my_name'] . '<br>';
+    echo 'Your e-mail is ' . $_POST['email'];
 }
 
 // Display the form
@@ -34,6 +35,9 @@ function show_form($errors = '') {
     print<<<_HTML_
 <form method="POST" action="$_SERVER[PHP_SELF]">
 Your name: <input type="text" name="my_name">
+<br/>
+<br/>
+Your e-mail: <input type="text" name="email">
 <br/>
 <input type="submit" value="Say Hello">
 <input type="hidden" name="_submit_check" value="1">
@@ -51,7 +55,10 @@ function validate_form() {
         $errors[] = 'Your name must be at least 3 letters long.';
     }
 
-    
+    if (! preg_match('/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i', 
+                 $_POST['email'])) {
+        $errors[] = 'Please enter a valid e-mail address';
+    }
 
     // Return the (possibly empty) array of error messages
     return $errors;
