@@ -1,4 +1,7 @@
 <?php
+
+require_once('formhelpers.php');
+
 // setup the arrays of choices in the select menus
 // these are needed in display_form(), validate_form(),
 // and process_form(), so they are declared in the global scope
@@ -17,7 +20,7 @@ $main_dishes = array('cuke' => 'Braised Sea Cucumber',
 // The main page logic:
 // - If the form is submitted, validate and then process or redisplay
 // - If it's not submitted, display
-if ($_POST['_submit_check']) {
+if (array_key_exists('_submit_check', $_POST)) {
     // If validate_form() returns errors, pass them to show_form()
     if ($form_errors = validate_form()) {
         show_form($form_errors);
@@ -32,12 +35,20 @@ if ($_POST['_submit_check']) {
 
 function show_form($errors = '') {
     // If the form is submitted, get defaults from submitted parameters
-    if ($_POST['_submit_check']) {
+    if (array_key_exists('_submit_check', $_POST)) {
         $defaults = $_POST;
     } else {
         // Otherwise, set our own defaults: medium size and yes to delivery
-        $defaults = array('delivery' => 'yes',
-                          'size'     => 'medium');
+        $defaults = array(
+
+            'name' => '',
+            'sweet' => '',
+            'main_dish' => array(),
+            'delivery' => 'yes',
+            'size'     => 'medium',
+            'comments' => '',
+
+        );
     }
     
     // If errors were passed in, put them in $error_text (with HTML markup)
