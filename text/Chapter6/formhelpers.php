@@ -38,12 +38,14 @@ function input_select($element_name, $selected, $options, $multiple = false) {
 
     // set up the list of things to be selected
     $selected_options = array();
-    if ($multiple) {
-        foreach ($selected[$element_name] as $val) {
-            $selected_options[$val] = true;
+    if(array_key_exists($element_name, $selected)){
+        if ($multiple) {
+            foreach ($selected[$element_name] as $val) {
+                $selected_options[$val] = true;
+            }
+        } else {
+            $selected_options[ $selected[$element_name] ] = true;
         }
-    } else {
-        $selected_options[ $selected[$element_name] ] = true;
     }
 
     // print out the <option> tags

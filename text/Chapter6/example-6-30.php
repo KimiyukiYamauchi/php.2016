@@ -120,16 +120,21 @@ function validate_form() {
         $errors[] = 'Please select a valid sweet item.';
     }
     // exactly two main dishes required
-    if (count($_POST['main_dish']) != 2) {
-        $errors[] = 'Please select exactly two main dishes.';
-    } else {
-        // We know there are two main dishes selected, so make sure they are 
-        // both valid
-        if (! (array_key_exists($_POST['main_dish'][0], $GLOBALS['main_dishes']) &&
-               array_key_exists($_POST['main_dish'][1], $GLOBALS['main_dishes']))) {
-            $errors[] = 'Please select exactly two valid main dishes.';
+    if(array_key_exists('main_dish', $_POST)){
+        if (count($_POST['main_dish']) != 2) {
+            $errors[] = 'Please select exactly two main dishes.';
+        } else {
+            // We know there are two main dishes selected, so make sure they are 
+            // both valid
+            if (! (array_key_exists($_POST['main_dish'][0], $GLOBALS['main_dishes']) &&
+                   array_key_exists($_POST['main_dish'][1], $GLOBALS['main_dishes']))) {
+                $errors[] = 'Please select exactly two valid main dishes.';
+            }
         }
+    }else{
+        $errors[] = 'Please select exactly two valid main dishes.';
     }
+    
     // if delivery is checked, then comments must contain something
     if (($_POST['delivery'] == 'yes') && (! strlen(trim($_POST['comments'])))) {
         $errors[] = 'Please enter your address for delivery.';
