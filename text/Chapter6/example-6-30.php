@@ -134,10 +134,12 @@ function validate_form() {
     }else{
         $errors[] = 'Please select exactly two valid main dishes.';
     }
-    
+
     // if delivery is checked, then comments must contain something
-    if (($_POST['delivery'] == 'yes') && (! strlen(trim($_POST['comments'])))) {
-        $errors[] = 'Please enter your address for delivery.';
+    if(array_key_exists('delivery', $_POST)){
+        if (($_POST['delivery'] == 'yes') && (! strlen(trim($_POST['comments'])))) {
+            $errors[] = 'Please enter your address for delivery.';
+        }
     }
 
     return $errors;
@@ -149,7 +151,8 @@ function process_form() {
     $sweet = $GLOBALS['sweets'][ $_POST['sweet'] ];
     $main_dish_1 = $GLOBALS['main_dishes'][ $_POST['main_dish'][0] ];
     $main_dish_2 = $GLOBALS['main_dishes'][ $_POST['main_dish'][1] ];
-    if ($_POST['delivery'] == 'yes') {
+    //if ($_POST['delivery'] == 'yes') {
+    if(array_key_exists('delivery', $_POST)){
         $delivery = 'do';
     } else {
         $delivery = 'do not';
