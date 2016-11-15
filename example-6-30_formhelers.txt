@@ -1,0 +1,22 @@
+・example-6-30.php
+-    if ($_POST['_submit_check']) {
++    if (array_key_exists('_submit_check', $_POST)) {
+
+-        $defaults = array('delivery' => 'yes',
+-                          'size'     => 'medium');
++        $defaults = array(
++
++            'name' => '',
++            'sweet' => '',
++            'main_dish' => array(),
++            'delivery' => 'yes',
++            'size'     => 'medium',
++            'comments' => '',
++
++        );
+
+
+・formhelpers.php
+
+-        if ($selected_options[$option]) {
++        if (array_key_exists($option, $selected_options)) {
