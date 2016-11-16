@@ -13,7 +13,7 @@ if (!$db->supports('transactions')) {
 }
 
 // トランザクションをオープンします
-//$res = $db->beginTransaction();
+$res = $db->beginTransaction();
 
 $q = $db->query("INSERT INTO dishes (dish_name, price, is_spicy)
     VALUES ('transaction test', 2.50, 0)");
@@ -21,7 +21,7 @@ $q = $db->query("INSERT INTO dishes (dish_name, price, is_spicy)
 if (MDB2::isError($q)) { die("query error: " . $q->getMessage()); }
 
 // コミットの処理
-//$res = $db->commit();
+$res = $db->commit();
 
 if (MDB2::isError($res)) { die("query error: " . $res->getMessage()); }
 
