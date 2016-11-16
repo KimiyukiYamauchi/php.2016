@@ -1,0 +1,10 @@
+1. サーバに接続
+$ vagrant ssh
+2. pearのインストール
+$ sudo yum insstall php-pear
+3. pearのインストールされているモジュールの一覧
+$ pear list
+4. mdb2のベータ版のインストール
+$ sudo pear install mdb2-beta
+$ sudo pear install MDB2_Driver_mysqli-beta
+$ sudo pear install MDB2_Driver_mysql-beta
