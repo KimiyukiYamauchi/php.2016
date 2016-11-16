@@ -1,0 +1,10 @@
+1. サーバに接続
+$ vagrant ssh
+2. データベースの内容をバックアップ
+$ mysqldump -u ユーザ名 -p データベース名 > バックアップ先のファイル名
+$ mysqldump -u yamauchi -p rensyu > backup.sql
+Enter password: (パスワード入力)
+3. データベースのバックアップをリストアする
+$ mysql -u ユーザ名 -p データベース名 < バックアップ先のファイル名
+$ mysql -u yamauchi -p rensyu < backup.sql
+Enter password: (パスワード入力)
