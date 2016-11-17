@@ -16,7 +16,7 @@ if (!$db->supports('transactions')) {
 $res = $db->beginTransaction();
 
 $q = $db->query("INSERT INTO dishes (dish_name, price, is_spicy)
-    VALUES ('transaction test', 2.50, 0)");
+    VALUES ('transaction testtesttest', 2.50, 0)");
 
 if (MDB2::isError($q)) { die("query error: " . $q->getMessage()); }
 
