@@ -1,4 +1,10 @@
+・example-6-29.php => formhelpers.phpにファイル名変更
+
+
 ・example-6-30.php
+
+require_once('formhelpers.php');
+
 -    if ($_POST['_submit_check']) {
 +    if (array_key_exists('_submit_check', $_POST)) {
 
