@@ -21,8 +21,10 @@ function input_textarea($element_name, $values) {
 //print a radio button or checkbox
 function input_radiocheck($type, $element_name, $values, $element_value) {
     print '<input type="' . $type . '" name="' . $element_name .'" value="' . $element_value . '" ';
-    if ($element_value == $values[$element_name]) {
-        print ' checked="checked"';
+    if(array_key_exists($element_name, $values)){
+        if ($element_value == $values[$element_name]) {
+            print ' checked="checked"';
+        }
     }
     print '/>';
 }
@@ -51,6 +53,7 @@ function input_select($element_name, $selected, $options, $multiple = false) {
     // print out the <option> tags
     foreach ($options as $option => $label) {
         print '<option value="' . htmlentities($option) . '"';
+        //if($_selected_options[$option]){
         if (array_key_exists($option, $selected_options)) {
             print ' selected="selected"';
         }
