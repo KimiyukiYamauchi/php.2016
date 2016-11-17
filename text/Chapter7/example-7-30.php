@@ -1,41 +1,46 @@
 <?php
-// Load PEAR DB
-require 'DB.php';
-// Load the form helper functions
-require 'formhelpers.php';
+require 'MDB2.php'; // PEARのMDB2モジュールをロード
 
-// Connect to the database
-$db = DB::connect('mysql://hunter:w)mp3s@db.example.com/restaurant');
-if (DB::isError($db)) { die ("Can't connect: " . $db->getMessage()); }
-// Set up automatic error handling
+// フォームヘルパー関数をロード
+require '../Chapter6/formhelpers.php';
+
+// db_program://ユーザ名:パスワード@ドメイン名/データベース名
+$db = MDB2::connect('mysqli://yamauchi:p@localhost/rensyu?charset=utf8');
+if (MDB2::isError($db)) { die("Can't connect: " . $db->getMessage()); }
+
+// 自動エラーハンドリング設定
 $db->setErrorHandling(PEAR_ERROR_DIE);
 
-// The main page logic:
-// - If the form is submitted, validate and then process or redisplay
-// - If it's not submitted, display
-if ($_POST['_submit_check']) {
+// メインページのロジック:
+// - フォームがサブミットされたら、検証してから処理あるいは表示する
+// - サブミットされなければ、表示する
+if (array_key_exists('_submit_check', $_POST)) {
     // If validate_form() returns errors, pass them to show_form()
     if ($form_errors = validate_form()) {
         show_form($form_errors);
     } else {
-        // The submitted data is valid, so process it
+        // サブミットされた値が妥当であれば、それを処理
         process_form();
     }
 } else {
-    // The form wasn't submitted, so display
+    // フォームがサブミットされなければ、表示
     show_form();
 }
 
 function show_form($errors = '') {
-    // If the form is submitted, get defaults from submitted parameters
-    if ($_POST['_submit_check']) {
+    // フォームがサブミットされたら、サブミットされた
+    // パラメータからデフォルトを取り出す
+    if (array_key_exists('_submit_check', $_POST)) {
         $defaults = $_POST;
     } else {
         // Otherwise, set our own defaults: price is $5
-        $defaults = array('price' => '5.00');
+        $defaults = array(
+            'dish_name' => '',
+            'price' => '5.00',
+        );
     }
     
-    // If errors were passed in, put them in $error_text (with HTML markup)
+    // エラーが渡されると、$error_text に入れる(HTMLマークアップとともに)
     if (is_array($errors)) {
         $error_text = '<tr><td>You need to correct the following errors:';
         $error_text .= '</td><td><ul><li>';
@@ -46,7 +51,7 @@ function show_form($errors = '') {
         $error_text = '';
     }
 
-    // Jump out of PHP mode to make displaying all the HTML tags easier
+    // すべてのHTMLタグをより簡単に表示するために、PHPモードを抜ける
 ?>
 <form method="POST" action="<?php print $_SERVER['PHP_SELF']; ?>">
 <table>
@@ -69,7 +74,7 @@ function show_form($errors = '') {
 <input type="hidden" name="_submit_check" value="1"/>
 </form>
 <?php
-      } // The end of show_form()
+      } // show_form()の終わり
 
 function validate_form() {
     $errors = array();
@@ -81,7 +86,7 @@ function validate_form() {
 
     // price must be a valid floating point number and 
     // more than 0
-    if (floatval($_POST['price'] <= 0) {
+    if (floatval($_POST['price']) <= 0) {
         $errors[] = 'Please enter a valid price.';
     }
 
@@ -93,22 +98,20 @@ function process_form() {
     global $db;
 
     // Get a unique ID for this dish
-    $dish_id = $db->nextID('dishes');
+    $dish_id = $db->nextID('dishes2');
 
     // Set the value of $is_spicy based on the checkbox
-    if ($_POST['is_spicy'] == 'yes') {
+    if (array_key_exists('is_spicy', $_POST)) {
         $is_spicy = 1;
     } else {
         $is_spicy = 0;
     }
 
-    // Insert the new dish into the table
-    $db->query('INSERT INTO dishes (dish_id, dish_name, price, is_spicy)
-                VALUES (?,?,?,?)',
-               array($dish_id, $_POST['dish_name'], $_POST['price'],
-                     $is_spicy));
+    // 新しい料理をテーブルに挿入
+    $sth = $db->prepare('INSERT INTO dishes2 (dish_id, dish_name, price, is_spicy) VALUES (?,?,?,?)');
+    $sth->execute(array($dish_id, $_POST['dish_name'], $_POST['price'], $is_spicy));
 
-    // Tell the user that we added a dish.
+    // 料理を追加したことをユーザに伝える
     print 'Added ' . htmlentities($_POST['dish_name']) . 
           ' to the database.';
 }
