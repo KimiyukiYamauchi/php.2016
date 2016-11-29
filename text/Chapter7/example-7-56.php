@@ -1,57 +1,61 @@
 <?php
 
-// Load PEAR DB
-require 'DB.php';
-// Load the form helper functions.
-require 'formhelpers.php';
+require 'MDB2.php'; // PEARのMDB2モジュールをロード
 
-// Connect to the database
-$db = DB::connect('mysql://hunter:w)mp3s@db.example.com/restaurant');
-if (DB::isError($db)) { die ("Can't connect: " . $db->getMessage()); }
+// フォームヘルパー関数をロード
+require '../Chapter6/formhelpers.php';
 
-// Set up automatic error handling
+// db_program://ユーザ名:パスワード@ドメイン名/データベース名
+$db = MDB2::connect('mysqli://yamauchi:p@localhost/rensyu?charset=utf8');
+if (MDB2::isError($db)) { die("Can't connect: " . $db->getMessage()); }
+
+// 自動エラーハンドリングを設定
 $db->setErrorHandling(PEAR_ERROR_DIE);
 
-// Set up fetch mode: rows as objects
-$db->setFetchMode(DB_FETCHMODE_OBJECT);
+// フェッチモードを設定：行をオブジェクトとする
+$db->setFetchMode(MDB2_FETCHMODE_OBJECT);
 
-// Choices for the "spicy" menu in the form
+// フォームのメニューでの"spicy"の選択肢
 $spicy_choices = array('no','yes','either');
 
-// The main page logic:
-// - If the form is submitted, validate and then process or redisplay
-// - If it's not submitted, display
-if ($_POST['_submit_check']) {
+// メインページのロジック:
+// - フォームがサブミットされたら、
+//    検証し、処理またはエラー付きフォーム表示
+// - フォームがサブミットされていない場合はフォームを表示
+if (array_key_exists('_submit_check', $_POST)) {
     // If validate_form() returns errors, pass them to show_form()
     if ($form_errors = validate_form()) {
         show_form($form_errors);
     } else {
-        // The submitted data is valid, so process it
+        // サブミットされた値が妥当であれば、それを処理
         process_form();
     }
 } else {
-    // The form wasn't submitted, so display
+    // フォームがサブミットされなければ、フォームを表示
     show_form();
 }
 
 function show_form($errors = '') {
-    // If the form is submitted, get defaults from submitted parameters
-    if ($_POST['_submit_check']) {
+    // フォームがサブミットされたら、サブミットされた
+    // パラメータからデフォルトを取り出す
+    if (array_key_exists('_submit_check', $_POST)) {
         $defaults = $_POST;
     } else {
-        // Otherwise, set our own defaults
+        // サブミットされていなければ、独自のデフォルトをセット
         $defaults = array('min_price' => '5.00',
-                          'max_price' => '25.00');
+                          'max_price' => '25.00',
+                          'dish_name' => '',
+                          );
     }
     
-    // If errors were passed in, put them in $error_text (with HTML markup)
+    // エラーが渡されると、$error_textに代入(HTMLマークアップ形式)
     if (is_array($errors)) {
         $error_text = '<tr><td>You need to correct the following errors:';
         $error_text .= '</td><td><ul><li>';
         $error_text .= implode('</li><li>',$errors);
         $error_text .= '</li></ul></td></tr>';
     } else {
-        // No errors? Then $error_text is blank
+        // エラーがなければ、$error_textは空を設定
         $error_text = '';
     }
 
@@ -81,22 +85,22 @@ function show_form($errors = '') {
 <input type="hidden" name="_submit_check" value="1"/>
 </form>
 <?php
-      } // The end of show_form()
+      } // show_form()の終わり
 
 function validate_form() {
     $errors = array();
 
-    // minimum price must be a valid floating point number
+    // 最低価格は妥当な浮動小数点数でなくてはならない
     if ($_POST['min_price'] != strval(floatval($_POST['min_price']))) {
         $errors[] = 'Please enter a valid minimum price.';
     }
 
-    // maximum price must be a valid floating point number
+    // 最高価格は妥当な浮動小数点数でなくてはならない
     if ($_POST['max_price'] != strval(floatval($_POST['max_price']))) {
         $errors[] = 'Please enter a valid maximum price.';
     }
 
-    // minimum price must be less than the maximum price
+    // 最低価格は最高価格より低くなくてはならない
     if ($_POST['min_price'] >= $_POST['max_price']) {
         $errors[] = 'The minimum price must be less than the maximum price.';
     }
@@ -108,23 +112,29 @@ function validate_form() {
 }
 
 function process_form() {
-    // Access the global variable $db inside this function
+    // この関数内で、グローバル変数の$dbにアクセスする
     global $db;
     
-    // build up the query 
+    // 問い合わせのSQL文を作成
     $sql = 'SELECT dish_name, price, is_spicy FROM dishes WHERE
             price >= ? AND price <= ?';
 
-    // if a dish name was submitted, add to the WHERE clause
-    // we use quoteSmart() and strtr() to prevent user-enter wildcards from working
+    // 料理名が入っていれば、where句に追加
+    // ユーザが入力したSQLのワイルドカードを避けるために
+    // quote()とstrtr()を追加
     if (strlen(trim($_POST['dish_name']))) {
-        $dish = $db->quoteSmart($_POST['dish_name']);
+        $dish = $db->quote($_POST['dish_name']);
         $dish = strtr($dish, array('_' => '\_', '%' => '\%'));
+
+        // 部分一致で検索できるように検索文字列の前後に%を追加
+        $dish = preg_replace('/^\'/', '\'%', $dish);
+        $dish = preg_replace('/\'$/', '%\'', $dish);
+
         $sql .= " AND dish_name LIKE $dish";
     }
 
-    // if is_spicy is "yes" or "no", add appropriate SQL
-    // (if it's either, we don't need to add is_spicy to the WHERE clause)
+    // is_spicyが"yes" または "no"の時はSQLを追加
+    // "either"なら何もしない
     $spicy_choice = $GLOBALS['spicy_choices'][ $_POST['is_spicy'] ];
     if ($spicy_choice == 'yes') {
         $sql .= ' AND is_spicy = 1';
@@ -132,10 +142,13 @@ function process_form() {
         $sql .= ' AND is_spicy = 0';
     }
 
-    // Send the query to the database program and get all the rows back
-    $dishes = $db->getAll($sql, array($_POST['min_price'],
-                                      $_POST['max_price']));
-
+    // クエリをデータベースプログラムに送り、戻ってくる
+    // すべての行を取得
+    $sth = $db->prepare($sql);
+    $result = 
+        $sth->execute(array($_POST['min_price'],$_POST['max_price']));
+    $dishes = $result->fetchAll();
+    
     if (count($dishes) == 0) {
         print 'No dishes matched.';
     } else {
