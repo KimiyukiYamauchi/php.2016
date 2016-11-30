@@ -1,0 +1,31 @@
+0. sqlite3のインストール
+0-1. ubuntu
+$ sudo apt install sqlite
+0-2. centos
+$ sudo yum install sqlite
+1. 仮想環境にssh接続
+$ vagrant ssh
+2. sqliteのバージョン確認
+$ sqlite3 -version
+3. phpのソースのディレクトリに移動
+$ cd /vagrant/www/php/text/Chapter7/
+4. test.dbデータベースへ接続
+$ sqlite3 test.db
+5. コマンドのヘルプ
+sqlite> .help
+6. sqliteから抜ける
+sqlite> .exit
+7. テーブルの一覧表
+sqlite> .table
+8. dishesテーブルの作成
+sqlite> create table dishes(dish_id, dish_name, price, is_spicy);
+9. dishesテーブルにデータを追加
+sqlite> insert into dishes values(1, 'そば', 300, 0);
+sqlite> insert into dishes values(2, 'うどん', 350, 0);
+sqlite> insert into dishes values(3, 'カツ丼', 500, 0);
+10. dishesテーブルの内容を表示
+sqlite> select * from dishes;
+11. dishesテーブルの構造を確認
+sqlite> .schema dishes
+sqlite> .mode line
+sqlite> select * from sqlite_master;
