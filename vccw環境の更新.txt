@@ -1,0 +1,8 @@
+1. ゲスト(centos)側のosをアップデート
+$ vagrant ssh
+$ sudo yum update
+2. アップデート後、共有フォルダのマウントに失敗する問題の修正
+$ vagrant plugin install vagrant-vbguest
+$ vagrant reload
+3. アップデート後、apacheの動作が不正になる問題の修正
+$ vagrant provision
