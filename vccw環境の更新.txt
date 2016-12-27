@@ -1,6 +1,7 @@
 1. ゲスト(centos)側のosをアップデート
 $ vagrant ssh
 $ sudo yum update
+一旦、exitでホスト(ubuntu)に戻る
 2. アップデート後、共有フォルダのマウントに失敗する問題の修正
 $ vagrant plugin install vagrant-vbguest
 $ vagrant reload
