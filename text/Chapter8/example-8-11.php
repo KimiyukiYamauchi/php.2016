@@ -8,7 +8,7 @@ $main_dishes = array('cuke' => 'Braised Sea Cucumber',
                      'giblets' => 'Baked Giblets with Salt', 
                      'abalone' => 'Abalone with Marrow and Duck Feet');
 
-if (count($_SESSION['order']) > 0) {
+if (array_key_exists('order', $_SESSION)) {
     print '<ul>';
     foreach ($_SESSION['order'] as $order) {
         $dish_name = $main_dishes[ $order['dish'] ];

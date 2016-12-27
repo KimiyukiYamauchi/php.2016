@@ -1,5 +1,5 @@
 <?php
-require 'formhelpers.php';
+require '../Chapter6/formhelpers.php';
 
 // This is identical to the input_text() function in formhelpers.php but
 // prints a password box (in which asterisks obscure what's entered)
@@ -11,7 +11,7 @@ function input_password($field_name, $values) {
 
 session_start();
 
-if ($_POST['_submit_check']) {
+if (array_key_exists('_submit_check', $_POST)) {
     if ($form_errors = validate_form()) {
         show_form($form_errors);
     } else {
@@ -22,6 +22,22 @@ if ($_POST['_submit_check']) {
 }
 
 function show_form($errors = '') {
+
+    // エラーになった時、入力値を保持するため$_POSTを設定
+    // 但し、最初のページ表示(get)の際はデフォルト値を設定
+    // ここから--v
+    if (array_key_exists('_submit_check', $_POST)) {
+        $defaults = $_POST;
+    } else {
+        $defaults = array(
+
+            'username' => '',
+            'password' => '',
+
+        );
+    }
+    // ここまで--^
+
     print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 
     if ($errors) {
@@ -30,11 +46,11 @@ function show_form($errors = '') {
         print '</li></ul>';
     } 
     print 'Username: ';
-    input_text('username', $_POST);
+    input_text('username', $defaults);
     print '<br/>';
 
     print 'Password: ';
-    input_password('password', $_POST);
+    input_password('password', $defaults);
     print '<br/>';
 
     input_submit('submit','Log In');
@@ -54,12 +70,12 @@ function validate_form() {
     // Make sure user name is valid
     if (! array_key_exists($_POST['username'], $users)) {
         $errors[] = 'Please enter a valid username and password.';
-    }
-                                   
-    // See if password is correct
-    $saved_password = $users[ $_POST['username'] ];
-    if ($saved_password != $_POST['password']) {
-        $errors[] = 'Please enter a valid username and password.';
+    }else{
+        // See if password is correct
+        $saved_password = $users[ $_POST['username'] ];
+        if ($saved_password != $_POST['password']) {
+            $errors[] = 'Please enter a valid username and password.';
+        }
     }
 
     return $errors;

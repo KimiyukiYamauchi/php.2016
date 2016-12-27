@@ -1,5 +1,5 @@
 <?php
-require 'formhelpers.php';
+require '../Chapter6/formhelpers.php';
 
 session_start();
 
@@ -10,7 +10,7 @@ $main_dishes = array('cuke' => 'Braised Sea Cucumber',
                      'giblets' => 'Baked Giblets with Salt', 
                      'abalone' => 'Abalone with Marrow and Duck Feet');
 
-if ($_POST['_submit_check']) {
+if (array_key_exists('_submit_check', $_POST)) {
     if ($form_errors = validate_form()) {
         show_form($form_errors);
     } else {
@@ -21,6 +21,21 @@ if ($_POST['_submit_check']) {
 }
 
 function show_form($errors = '') {
+    // エラーになった時、入力値を保持するため$_POSTを設定
+    // 但し、最初のページ表示(get)の際はデフォルト値を設定
+    // ここから--v
+    if (array_key_exists('_submit_check', $_POST)) {
+        $defaults = $_POST;
+    } else {
+        // 初期状態は料理の数は空白にする
+        $defaults = array(
+
+            'quantity' => '',
+
+        );
+    }
+    // ここまで--^
+
     print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 
     if ($errors) {
@@ -36,7 +51,7 @@ function show_form($errors = '') {
     print '<br/>';
 
     print 'Quantity: ';
-    input_text('quantity', $_POST);
+    input_text('quantity', $defaults);
     print '<br/>';
 
     input_submit('submit','Order');
