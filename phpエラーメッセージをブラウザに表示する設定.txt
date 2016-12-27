@@ -1,0 +1,20 @@
+1. ゲスト(centos)にssh接続
+$ vagrant ssh
+2. php.iniをvim(エディタ)で開く
+$ sudo vi /etc/php.ini
+3. 「display」で検索
+/display(enter)
+4. 目的の場所までジャンプ
+n
+を何回か押して、
+display_errors = Off
+の場所まで移動
+5. Off -> Onに変更
+i
+編集モード、カーソルを移動し、変更
+6. 変更内容を保存し、vimを終了
+esc
+ノーマルモード、
+:wq
+7. apacheの再起動
+$ sudo service httpd restart
