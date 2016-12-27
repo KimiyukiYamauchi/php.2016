@@ -1,1 +1,4 @@
-setcookie('short-userid','ralph',0,'/','.example.com');
+<?php
+
+//setcookie('short-userid','ralph',0,'/','.vccw.dev');
+setcookie('short-userid','',0,'/','.vccw.dev');
