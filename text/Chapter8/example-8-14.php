@@ -1,5 +1,20 @@
 <?php
+
 require '../Chapter6/formhelpers.php';
+
+// データベースにアクセスするため追加 ここから-----V
+
+require 'MDB2.php'; // PEARのMDB2モジュールをロード
+
+// db_program://ユーザ名:パスワード@ドメイン名/データベース名
+$db = MDB2::connect('mysqli://yamauchi:p@localhost/rensyu');
+if (MDB2::isError($db)) { die("Can't connect: " . $db->getMessage()); }
+
+// この後のデータベースエラーに関してはメッセージを出力して抜け出す
+$db->setErrorHandling(PEAR_ERROR_DIE);
+
+// データベースにアクセスするため追加 ここまで-----^
+
 
 // This is identical to the input_text() function in formhelpers.php but
 // prints a password box (in which asterisks obscure what's entered)
@@ -60,23 +75,36 @@ function show_form($errors = '') {
 }
 
 function validate_form() {
+
+    global $db;
+
     $errors = array();
 
     // Some sample usernames and passwords
-    $users = array('alice'   => 'dog123',
+    /*$users = array('alice'   => 'dog123',
                    'bob'     => 'my^pwd',
-                   'charlie' => '**fun**');
+                   'charlie' => '**fun**');*/
+
+    /*$users = array('alice'   => '$1$rasmusle$6IB4LK6olusfciGGKSDAJ/',
+                   'bob'     => '$1$rasmusle$tsfgBLqGLclawiIpWmhyr.',
+                   'charlie' => '$1$rasmusle$WmmxbNYGkNmARkTfap19M1');*/
     
     // Make sure user name is valid
-    if (! array_key_exists($_POST['username'], $users)) {
+    /*if (! array_key_exists($_POST['username'], $users)) {
         $errors[] = 'Please enter a valid username and password.';
-    }else{
+    }else{*/
         // See if password is correct
-        $saved_password = $users[ $_POST['username'] ];
-        if ($saved_password != $_POST['password']) {
+        //$saved_password = $users[ $_POST['username'] ];
+
+        $sth = $db->prepare('select password from users WHERE username = ?');
+        $result = $sth->execute(array($_POST['username']));
+        $saved_password = $result->fetchOne();
+
+        //if ($saved_password != $_POST['password']) {
+        if ($saved_password != crypt($_POST['password'], $saved_password)) {
             $errors[] = 'Please enter a valid username and password.';
         }
-    }
+    //}
 
     return $errors;
 }
