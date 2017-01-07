@@ -1,3 +1,4 @@
+<?php
 $midnight_today = mktime(0,0,0);
 print '<select name="date">';
 for ($i = 0; $i < 7; $i++) {

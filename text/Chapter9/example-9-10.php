@@ -1,4 +1,5 @@
-require 'formhelpers.php';
+<?php
+require '../Chapter6/formhelpers.php';
 
 $midnight_today = mktime(0,0,0);
 $choices = array();
