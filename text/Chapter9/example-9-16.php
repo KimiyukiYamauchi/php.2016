@@ -1,5 +1,5 @@
 <?php
-require 'formhelpers.php';
+require '../Chapter6/formhelpers.php';
 
 // Set up arrays of months, days, years, hours, and minutes 
 $months = array(1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April', 
@@ -24,7 +24,7 @@ for ($minute = 0; $minute < 60; $minute+=5) {
     $minutes[$formatted_minute] = $formatted_minute;
 }
 
-if ($_POST['_submit_check']) {
+if (array_key_exists('_submit_check', $_POST)) {
     // If validate_form() returns errors, pass them to show_form()
     if ($form_errors = validate_form()) {
         show_form($form_errors);
@@ -41,7 +41,7 @@ function show_form($errors = '') {
     global $hours, $minutes, $months, $days, $years;
 
     // If the form is submitted, get defaults from submitted variables
-    if ($_POST['_submit_check']) {
+    if (array_key_exists('_submit_check', $_POST)) {
         $defaults = $_POST;
     } else {
         // Otherwise, set our own defaults: the current time and date parts
