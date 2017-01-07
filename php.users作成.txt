@@ -1,0 +1,19 @@
+1. ゲストOS(CentOS)に接続
+$ vagrant ssh
+2. データベースに接続
+$ mysql -u yamauchi -p rensyu
+Enter password:
+3. テーブル作成
+mysql> create table users(
+    -> username varchar(255),
+    -> password varchar(255));
+4. データの追加
+mysql> insert into users values('alice', '$1$rasmusle$6IB4LK6olusfciGGKSDAJ/');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into users values('bob', '$1$rasmusle$tsfgBLqGLclawiIpWmhyr.');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into users values('charlie', '$1$rasmusle$WmmxbNYGkNmARkTfap19M1');
+Query OK, 1 row affected (0.01 sec)
+
