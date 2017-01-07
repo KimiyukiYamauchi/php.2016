@@ -1,4 +1,5 @@
-require 'formhelpers.php';
+<?php
+require '../Chapter6/formhelpers.php';
 
 $hours = array();
 for ($hour = 1; $hour <= 12; $hour++) { $hours[$hour] = $hour; }
