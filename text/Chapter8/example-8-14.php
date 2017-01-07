@@ -100,6 +100,10 @@ function validate_form() {
         $result = $sth->execute(array($_POST['username']));
         $saved_password = $result->fetchOne();
 
+        var_dump($saved_password);
+        var_dump($_POST['password']);
+        var_dump(crypt($_POST['password'], $saved_password));
+
         //if ($saved_password != $_POST['password']) {
         if ($saved_password != crypt($_POST['password'], $saved_password)) {
             $errors[] = 'Please enter a valid username and password.';
