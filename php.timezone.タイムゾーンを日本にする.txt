@@ -1,0 +1,20 @@
+1. ゲスト(centos)にssh接続
+$ vagrant ssh
+2. php.iniをvim(エディタ)で開く
+$ sudo vi /etc/php.ini
+3. 「date.timezone」で検索
+/date.timezone(enter)
+4. 目的の場所までジャンプ
+n
+を何回か押して、
+date.timezone = "UTC"
+の場所まで移動
+5."UTC" -> "Asia/Tokyo"に変更
+i
+編集モード、カーソルを移動し、変更
+6. 変更内容を保存し、vimを終了
+esc
+ノーマルモード、
+:wq
+7. apacheの再起動
+$ sudo service httpd restart
