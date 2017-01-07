@@ -1,4 +1,5 @@
-require 'formhelpers.php';
+<?php
+require '../Chapter6/formhelpers.php';
 
 $months = array(1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April', 
                 5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
@@ -6,11 +7,11 @@ $months = array(1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
                 12 => 'December');
 
 $years = array();
-for ($year = date('Y'), $max_year = date('Y') + 10; $year < $max_year; $year++) {
+for ($year = date('Y')-1, $max_year = date('Y') + 10; $year < $max_year; $year++) {
     $years[$year] = $year;
 }
 
-if ($_POST['_submit_check']) {
+if (array_key_exists('_submit_check', $_POST)) {
     if ($form_errors = validate_form()) {
         show_form($form_errors);
     } else {
