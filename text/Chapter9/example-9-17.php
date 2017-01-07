@@ -1,6 +1,6 @@
 <?php
 // Use the form helper functions defined in Chapter 6
-require 'formhelpers.php';
+require '../Chapter6/formhelpers.php';
 
 $months = array(1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April', 
                 5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
@@ -12,7 +12,7 @@ for ($year = date('Y') - 1, $max_year = date('Y') + 5; $year < $max_year; $year+
     $years[$year] = $year;
 }
 
-if ($_POST['_submit_check']) {
+if (array_key_exists('_submit_check', $_POST)) {
     if ($errors = validate_form()) {
         show_form($errors);
     } else {
@@ -45,7 +45,7 @@ function show_form($errors = '') {
     global $months, $years, $this_year;
 
     // If the form is submitted, get defaults from submitted variables
-    if ($_POST['_submit_check']) {
+    if (array_key_exists('_submit_check', $_POST)) {
         $defaults = $_POST;
     } else {
         // Otherwise, set our own defaults: the current month and year
