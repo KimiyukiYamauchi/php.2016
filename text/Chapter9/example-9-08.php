@@ -1,5 +1,6 @@
+<?php
 // Find the epoch timestamp for November 1, 2008
-$november = mktime(0,0,0,11,1,2008);
+$november = mktime(0,0,0,11,1,2020);
 // Find the First monday on or after November 1, 2008
 $monday = strtotime('Monday', $november);
 // Skip ahead one day to the Tuesday after the first Monday
